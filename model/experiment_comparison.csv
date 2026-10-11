@@ -1,0 +1,4 @@
+Model,Validation Accuracy,Validation Macro F1,Training Seconds
+Word + Character TF-IDF + Logistic Regression,0.6945,0.671524664926317,27.7
+Word + Character TF-IDF + Linear SVM,0.7025,0.6600777339686446,30.7
+Word TF-IDF + Logistic Regression,0.6575,0.636500994009558,6.5

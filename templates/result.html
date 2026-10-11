@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#061b20">
+    <title>Analysis Results | SentixAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="result-body">
+
+<header class="navbar">
+    <a class="brand" href="/">
+        <span class="brand-icon">✦</span>
+        <span>
+            <strong>SentixAI</strong>
+            <small>Sentiment Intelligence</small>
+        </span>
+    </a>
+
+    <nav>
+        <a href="/">Home</a>
+        <a class="active" href="/#analyze">Analyze</a>
+        <a href="/#features">Features</a>
+    </nav>
+
+    <span class="status"><i></i> Analysis Complete</span>
+</header>
+
+<main class="result-main">
+
+    <div class="result-topline">
+        <div>
+            <span class="eyebrow">✦ YOUR ANALYSIS RESULTS</span>
+            <h1>Sentiment <span>Report</span></h1>
+            <p class="result-subtitle">
+                Here's what our machine-learning model found in your text.
+            </p>
+        </div>
+
+        <a class="back-button" href="/#analyze">← New Analysis</a>
+    </div>
+
+    <section class="result-summary {{ sentiment_class }}">
+        <div class="summary-main">
+            <span class="summary-kicker">PREDICTED SENTIMENT</span>
+
+            <div class="sentiment-heading">
+                <span class="sentiment-emoji">{{ sentiment_emoji }}</span>
+                <h2>{{ sentiment }}</h2>
+            </div>
+
+            <p class="summary-description">
+                {% if uncertain %}
+                    The model is uncertain about this text. Review the
+                    probability breakdown before relying on this prediction.
+                {% elif sentiment_key == "positive" %}
+                    The model identifies positive sentiment in the text you provided.
+                {% elif sentiment_key == "negative" %}
+                    The model identifies negative sentiment in the text you provided.
+                {% else %}
+                    The model identifies neutral sentiment in the text you provided.
+                {% endif %}
+            </p>
+
+            {% if uncertain %}
+                <div class="uncertainty-note">
+                    ⚠ Low confidence: this prediction may be unreliable.
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="summary-score">
+            <div class="score-ring">
+                <div class="score-inner">
+                    <strong>{{ "%.2f"|format(confidence) }}%</strong>
+                    <span>Top-class probability</span>
+                </div>
+            </div>
+            <span class="score-caption">Model output, not a guarantee of correctness</span>
+        </div>
+    </section>
+
+    <div class="result-grid">
+
+        <section class="result-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="eyebrow">TEXT REVIEW</span>
+                    <h2>Your submitted text</h2>
+                </div>
+                <span class="panel-symbol">Aa</span>
+            </div>
+
+            <blockquote class="submitted-text">{{ text }}</blockquote>
+
+            <div class="text-meta">
+                <span>▤ {{ text|length }} characters</span>
+                <span>✦ Sentiment analysis</span>
+            </div>
+        </section>
+
+        <section class="result-panel probability-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="eyebrow">MODEL BREAKDOWN</span>
+                    <h2>Probability distribution</h2>
+                </div>
+                <span class="panel-symbol">%</span>
+            </div>
+
+            <p class="panel-description">
+                Compare the model's scores across all three classes.
+            </p>
+
+            <div class="probability-list">
+                {% for item in probabilities %}
+                <div class="probability-item">
+                    <div class="probability-label">
+                        <span>
+                            <span class="probability-dot {{ item.key }}"></span>
+                            {{ item.name }}
+                        </span>
+                        <strong>{{ "%.2f"|format(item.probability) }}%</strong>
+                    </div>
+
+                    <div class="probability-track">
+                        <div
+                            class="probability-fill {{ item.key }}"
+                            style="width: {{ item.probability }}%;">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <p class="probability-footnote">
+                These scores are produced by the trained classifier.
+                They should not be interpreted as guaranteed real-world accuracy.
+            </p>
+        </section>
+
+        <section class="result-panel insight-panel">
+            <div class="insight-icon">✧</div>
+            <span class="eyebrow">MODEL INSIGHT</span>
+            <h2>What this result means</h2>
+            <p>{{ insight }}</p>
+            <span class="insight-disclaimer">
+                This explanation is rule-based, not a separate generative AI analysis.
+            </span>
+        </section>
+
+        <section class="result-panel details-panel">
+            <span class="eyebrow">ABOUT THIS ANALYSIS</span>
+            <h2>How to read your result</h2>
+
+            <div class="detail-row">
+                <span>Classification task</span>
+                <strong>3-class sentiment</strong>
+            </div>
+            <div class="detail-row">
+                <span>Prediction classes</span>
+                <strong>Positive · Neutral · Negative</strong>
+            </div>
+            <div class="detail-row">
+                <span>Text processed</span>
+                <strong>{{ text|length }} characters</strong>
+            </div>
+
+            <p class="details-note">
+                SentixAI is a machine-learning project. Predictions may be
+                less reliable for sarcasm, mixed emotions, ambiguous wording,
+                or text unlike the training data.
+            </p>
+        </section>
+
+    </div>
+
+    <div class="result-actions">
+        <a href="/#analyze" class="primary-result-button">✦ Analyze Another Text <span>→</span></a>
+        <button type="button" id="copy-result" class="secondary-result-button">
+            Copy Report
+        </button>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+
+</main>
+
+<footer>
+    <a class="brand footer-brand" href="/">
+        <span class="brand-icon">✦</span>
+        <span><strong>SentixAI</strong><small>Sentiment Intelligence</small></span>
+    </a>
+    <p>Machine learning for understanding text.</p>
+    <span>SentixAI · Project 2026</span>
+</footer>
+
+<script>
+const copyButton = document.getElementById("copy-result");
+const copyStatus = document.getElementById("copy-status");
+
+copyButton.addEventListener("click", async () => {
+    const report = [
+        "SentixAI Sentiment Report",
+        "Sentiment: {{ sentiment }}",
+        "Top-class probability: {{ confidence }}%",
+        "Submitted text: {{ text|replace('\\', '\\\\')|replace('\n', ' ')|replace('\r', ' ') }}",
+        "Model insight: {{ insight }}"
+    ].join("\n");
+
+    try {
+        await navigator.clipboard.writeText(report);
+        copyStatus.textContent = "Report copied successfully.";
+    } catch (error) {
+        copyStatus.textContent =
+            "Copy was unavailable in this browser. Please select and copy the report manually.";
+    }
+});
+</script>
+
+</body>
+</html>

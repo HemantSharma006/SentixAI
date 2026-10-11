@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#061b20">
+    <title>SentixAI | Sentiment Intelligence</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    <header class="navbar">
+        <a class="brand" href="/">
+            <span class="brand-icon">✦</span>
+            <span><strong>SentixAI</strong><small>Sentiment Intelligence</small></span>
+        </a>
+        <nav>
+            <a class="active" href="/">Home</a>
+            <a href="#analyze">Analyze</a>
+            <a href="#features">Features</a>
+        </nav>
+        <span class="status"><i></i> AI Ready</span>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <span class="eyebrow">✦ AI SENTIMENT ANALYSIS</span>
+                <h1>Reveal the <span>sentiment</span><br>in any text.</h1>
+                <p class="hero-description">
+                    Analyze reviews, comments, and feedback using machine learning.
+                    Understand the emotion behind the words in seconds.
+                </p>
+                <div class="benefits">
+                    <div><span>⚡</span><p><strong>Fast analysis</strong><small>Instant predictions</small></p></div>
+                    <div><span>▥</span><p><strong>Machine learning</strong><small>Three sentiment classes</small></p></div>
+                    <div><span>◇</span><p><strong>Multi-purpose</strong><small>Reviews and feedback</small></p></div>
+                </div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="art-document">
+                    <span class="document-dot"></span>
+                    <div class="art-line long"></div>
+                    <div class="art-line"></div>
+                    <div class="art-line medium"></div>
+                    <div class="art-line long"></div>
+                    <div class="art-line short"></div>
+                </div>
+                <span class="mood mood-positive">☺</span>
+                <span class="mood mood-neutral">😐</span>
+                <span class="mood mood-negative">☹</span>
+                <span class="art-spark spark-one">✦</span>
+                <span class="art-spark spark-two">✧</span>
+            </div>
+        </section>
+
+        <section class="analyzer-section" id="analyze">
+            <div class="section-heading">
+                <span class="eyebrow">YOUR TEXT, UNDERSTOOD</span>
+                <h2>What does your text say?</h2>
+                <p>Paste a review, comment, or message to analyze its sentiment.</p>
+            </div>
+
+            <form action="{{ url_for('analyze') }}" method="POST" class="analyzer-card" id="sentiment-form">
+                <div class="input-heading">
+                    <label for="text"><span class="input-icon">▤</span> Enter your text</label>
+                    <span id="char-count">0 / 500 characters</span>
+                </div>
+
+                <textarea
+                    id="text"
+                    name="text"
+                    maxlength="500"
+                    rows="6"
+                    placeholder="Type or paste your text here to analyze the sentiment..."
+                    required>{{ input_text|default('') }}</textarea>
+
+                {% if error %}
+                <p class="form-error" role="alert">{{ error }}</p>
+                {% endif %}
+
+                <div class="examples">
+                    <span>Try an example:</span>
+                    <button type="button" class="example-chip positive-chip"
+                        data-text="I absolutely love this product! The quality is fantastic.">☺ Positive</button>
+                    <button type="button" class="example-chip neutral-chip"
+                        data-text="The package arrived today. It contains the items I ordered.">😐 Neutral</button>
+                    <button type="button" class="example-chip negative-chip"
+                        data-text="Very disappointing. The product stopped working and customer service was terrible.">☹ Negative</button>
+                </div>
+
+                <button type="submit" class="analyze-button">
+                    <span>✦</span> Analyze Sentiment <span class="button-arrow">→</span>
+                </button>
+                <p class="privacy-note">Your text is analyzed by the machine-learning model running in this application.</p>
+            </form>
+        </section>
+
+        <section class="features-section" id="features">
+            <div class="section-heading">
+                <span class="eyebrow">BUILT FOR EVERYDAY TEXT</span>
+                <h2>What can you analyze?</h2>
+            </div>
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <span class="feature-icon purple-icon">▤</span>
+                    <h3>Product reviews</h3>
+                    <p>Explore customer opinions about products and services.</p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon red-icon">●</span>
+                    <h3>Social comments</h3>
+                    <p>Understand the tone of short online posts and comments.</p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon blue-icon">▧</span>
+                    <h3>Survey feedback</h3>
+                    <p>Classify written feedback to help identify sentiment.</p>
+                </article>
+                <article class="feature-card">
+                    <span class="feature-icon green-icon">✧</span>
+                    <h3>General text</h3>
+                    <p>Try everyday sentences and see the model's prediction.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a class="brand footer-brand" href="/">
+            <span class="brand-icon">✦</span>
+            <span><strong>SentixAI</strong><small>Sentiment Intelligence</small></span>
+        </a>
+        <p>Machine learning for understanding text.</p>
+        <span>SentixAI · Project 2026</span>
+    </footer>
+</body>
+</html>
